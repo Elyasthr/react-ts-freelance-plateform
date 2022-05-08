@@ -2,24 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Card from '../../components/Card';
 import { CardProfileProps } from '../../interfaces';
-
-const freelanceProfiles: CardProfileProps[] = [
-  {
-    name: 'Jane Doe',
-    jobTitle: 'Devops',
-    picture: 'test'
-  },
-  {
-    name: 'John Doe',
-    jobTitle: 'Developpeur frontend',
-    picture: 'test'
-  },
-  {
-    name: 'Jeanne Biche',
-    jobTitle: 'Développeuse Fullstack',
-    picture: 'test'
-  }
-];
+import { useFetch } from '../../utils/hooks';
+import { Loader } from '../Survey';
 
 const CardsContainer = styled.div`
   display: grid;
@@ -28,22 +12,36 @@ const CardsContainer = styled.div`
   grid-template-columns: repeat(2, 1fr);
 `;
 
+type C = {
+  freelancersList: CardProfileProps[];
+};
+
 const Freelances: React.FC = () => {
+  const { data, isLoading, error } = useFetch<C>(
+    'http://localhost:8000/freelances'
+  );
+
+  if (error) return <span>Il y a une erreur</span>;
+
   return (
     <div>
       <h1>Freelances</h1>
-      <CardsContainer>
-        {freelanceProfiles.map((profile) => {
-          return (
-            <Card
-              key={profile.name}
-              name={profile.name}
-              jobTitle={profile.jobTitle}
-              picture={profile.picture}
-            />
-          );
-        })}
-      </CardsContainer>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <CardsContainer>
+          {data?.freelancersList.map((profile) => {
+            return (
+              <Card
+                key={profile.id}
+                name={profile.name}
+                job={profile.job}
+                picture={profile.picture}
+              />
+            );
+          })}
+        </CardsContainer>
+      )}
     </div>
   );
 };

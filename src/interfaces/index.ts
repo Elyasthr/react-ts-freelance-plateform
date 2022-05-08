@@ -1,5 +1,6 @@
 export interface CardProfileProps {
+  id?: number;
   name: string;
-  jobTitle: string;
+  job: string;
   picture: string;
 }

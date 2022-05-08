@@ -26,12 +26,12 @@ const CardImage = styled.img`
   width: 80px;
   border-radius: 50%;
 `;
-const Card: React.FC<CardProfileProps> = ({ name, jobTitle, picture }) => {
+const Card: React.FC<CardProfileProps> = ({ name, job, picture }) => {
   return (
     <CardWrapper>
       <CardLabel>{name}</CardLabel>
       <CardImage src={picture} alt="freelance" height={80} width={80} />
-      <span>{jobTitle}</span>
+      <span>{job}</span>
     </CardWrapper>
   );
 };
